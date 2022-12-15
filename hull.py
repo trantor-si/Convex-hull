@@ -14,7 +14,7 @@ def set_correct_normal(possible_internal_points,plane): #Make the orientation of
 				return         
 
 def printV(vec): # Print points
-	print vec.x, vec.y, vec.z
+	print (vec.x, vec.y, vec.z)
 
 def cross(pointA, pointB): # Cross product
 	x = (pointA.y*pointB.z) - (pointA.z*pointB.y)
@@ -236,8 +236,10 @@ def initial_dis(p, q): # Gives the Euclidean distance
 def initial_max(now): # From the extreme points calculate the 2 most distant points
 	maxi = -1
 	found = [[], []]
-	for i in xrange(6):
-		for j in xrange(i+1, 6):	
+	# for i in xrange(6):
+	# 	for j in xrange(i+1, 6):	
+	for i in range(6):
+		for j in range(i+1, 6):	
 			dist = initial_dis(now[i], now[j])
 			if dist > maxi:
 				found = [now[i], now[j]]
@@ -252,7 +254,8 @@ def initial(): # To calculate the extreme points to make the initial simplex
 	y_max_temp = -10**9
 	z_min_temp = 10**9
 	z_max_temp = -10**9
-	for i in xrange(num): 
+	# for i in xrange(num): 
+	for i in range(num): 
 		if points[i].x > x_max_temp:
 			x_max_temp = points[i].x
 			x_max = points[i]
@@ -282,18 +285,19 @@ def initial(): # To calculate the extreme points to make the initial simplex
 points = [] # List to store the points
 
 if len(sys.argv) < 2:
-	print "Few arguments. See README for help"
+	print ("Few arguments. See README for help")
 	sys.exit()
 
 try: # Open the input and store it in points list
 	data = open(sys.argv[1], "r")
 	num = int(data.readline())
 	for line in data:
-		a = map(float, line.split())
+		# a = map(float, line.split())
+		a = list(map(float, line.split()))
 		points.append(Point(a[0], a[1], a[2]))
 
 	if num < 4:
-		print "Less than 4 points so 1D or 2D"
+		print ("Less than 4 points so 1D or 2D")
 		sys.exit()
 
 finally:
@@ -306,8 +310,8 @@ try:
 	first_plane = Plane(initial_line[0], initial_line[1], third_point) # Make the initial plane by joining 3rd point to the line
 
 	fourth_point = max_dist_plane_point(first_plane) # Make the fourth plane to make a tetrahedron
-except:
-	print "Figure either in 2D or 3D"
+except Exception as e:
+	print ("Figure either in 2D or 3D: ", e)
 	sys.exit()
 
 possible_internal_points = [initial_line[0],initial_line[1],third_point,fourth_point] # List that helps in calculating orientation of point
